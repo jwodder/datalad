@@ -32,6 +32,7 @@ from datalad.tests.utils import (
     assert_false,
     ok_,
     assert_is_instance,
+    skip_if,
     skip_if_on_windows,
 )
 from ..sshconnector import SSHConnection, SSHManager, sh_quote
@@ -174,13 +175,16 @@ def test_ssh_manager_close_no_throw(bogus_socket):
 
 
 @skip_if_on_windows
+@skip_if(cond=not os.environ.get("DATALAD_TESTS_SSH_PORT"),
+         msg="Test depends on DATALAD_TESTS_SSH_PORT being set")
 @skip_ssh
 @with_tempfile(mkdir=True)
 @with_tempfile(content="one")
 @with_tempfile(content="two")
 def test_ssh_copy(sourcedir, sourcefile1, sourcefile2):
 
-    remote_url = 'ssh://localhost:22'
+    remote_url = 'ssh://datalad-test:{}'.format(
+        os.environ["DATALAD_TESTS_SSH_PORT"])
     manager = SSHManager()
     ssh = manager.get_connection(remote_url)
 

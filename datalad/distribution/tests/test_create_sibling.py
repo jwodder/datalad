@@ -44,6 +44,7 @@ from datalad.tests.utils import (
     ok_exists,
     ok_file_has_content,
     ok_file_under_git,
+    skip_if,
     skip_if_on_windows,
     skip_ssh,
     skip_if_root,
@@ -177,6 +178,8 @@ def test_invalid_call(path):
 
 
 @skip_if_on_windows  # create_sibling incompatible with win servers
+@skip_if(cond=not os.environ.get("DATALAD_TESTS_SSH_PORT"),
+         msg="Test depends on DATALAD_TESTS_SSH_PORT being set")
 @skip_ssh
 @with_testrepos('.*basic.*', flavors=['local'])
 @with_tempfile(mkdir=True)
@@ -193,7 +196,8 @@ def test_target_ssh_simple(origin, src_path, target_rootpath):
         create_sibling(
             dataset=source,
             name="local_target",
-            sshurl="ssh://localhost:22",
+            sshurl="ssh://datalad-test:{}".format(
+                os.environ["DATALAD_TESTS_SSH_PORT"]),
             target_dir=target_path,
             ui=True)
         assert_not_in('enableremote local_target failed', cml.out)
