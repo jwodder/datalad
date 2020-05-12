@@ -823,7 +823,7 @@ def test_install_subds_with_space(opath, tpath):
         install(tpath, source=opath, recursive=True)
     else:
         # do via ssh!
-        install(tpath, source="localhost:" + opath, recursive=True)
+        install(tpath, source="datalad-test:" + opath, recursive=True)
     assert Dataset(opj(tpath, 'sub ds')).is_installed()
 
 
@@ -857,7 +857,7 @@ def test_install_subds_from_another_remote(topdir):
         origin = create(origin_, annex=False)
         clone1 = install(source=origin, path=clone1_)
         # print("Initial clone")
-        clone1.create_sibling('ssh://localhost%s/%s' % (PathRI(getpwd()).posixpath, clone2_), name=clone2_)
+        clone1.create_sibling('ssh://datalad-test%s/%s' % (PathRI(getpwd()).posixpath, clone2_), name=clone2_)
 
         # print("Creating clone2")
         clone1.publish(to=clone2_)

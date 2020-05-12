@@ -226,7 +226,7 @@ def test_ssh_copy(sourcedir, sourcefile1, sourcefile2):
 @skip_if_on_windows
 @skip_ssh
 def test_ssh_compound_cmds():
-    ssh = SSHManager().get_connection('ssh://localhost')
+    ssh = SSHManager().get_connection('ssh://datalad-test')
     out, err = ssh('[ 1 = 2 ] && echo no || echo success')
     eq_(out.strip(), 'success')
     ssh.close()  # so we get rid of the possibly lingering connections
@@ -246,11 +246,11 @@ def test_ssh_custom_identity_file():
             cfg.reload(force=True)
             with swallow_logs(new_level=logging.DEBUG) as cml:
                 manager = SSHManager()
-                ssh = manager.get_connection('ssh://localhost')
+                ssh = manager.get_connection('ssh://datalad-test')
                 cmd_out, _ = ssh("echo blah")
                 expected_socket = op.join(
                     str(manager.socket_dir),
-                    get_connection_hash("localhost", identity_file=ifile,
+                    get_connection_hash("datalad-test", identity_file=ifile,
                                         bundled=True))
                 ok_(exists(expected_socket))
                 manager.close()
@@ -264,7 +264,7 @@ def test_ssh_custom_identity_file():
 @skip_if_on_windows
 @skip_ssh
 def test_ssh_git_props():
-    remote_url = 'ssh://localhost'
+    remote_url = 'ssh://datalad-test'
     manager = SSHManager()
     ssh = manager.get_connection(remote_url)
     # Note: Avoid comparing these versions directly to the versions in
@@ -282,7 +282,7 @@ def test_ssh_git_props():
 @skip_ssh
 @with_tempfile(mkdir=True)
 def test_bundle_invariance(path):
-    remote_url = 'ssh://localhost'
+    remote_url = 'ssh://datalad-test'
     manager = SSHManager()
     testfile = Path(path) / 'dummy'
     for flag in (True, False):
