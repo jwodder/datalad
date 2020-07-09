@@ -10,7 +10,7 @@ if [ -e "$_ANNEXDIR" ]; then
 fi
 echo "I: downloading and extracting under $_ANNEXDIR"
 tar -C $(dirname $_ANNEXDIR) -xzf <(
-  wget -q -O- https://downloads.kitenet.net/git-annex/linux/current/git-annex-standalone-amd64.tar.gz
+  wget -q -O- https://downloads.kitenet.net/git-annex/autobuild/amd64/git-annex-standalone-amd64.tar.gz
 )
 )
 
