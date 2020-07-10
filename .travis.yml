@@ -47,6 +47,13 @@ matrix:
     - NOSE_SELECTION_OP=not
     - _DL_UPSTREAM_GITANNEX=1
     - LOCPATH=
+  - python: 3.7
+    dist: bionic
+    env:
+    - NOSE_SELECTION=
+    - NOSE_SELECTION_OP=not
+    - _DL_UPSTREAM_GITANNEX=1
+    - LOCPATH=
 
 before_install:
   - if [ ! -z "${_DL_CRON:-}" ]; then
